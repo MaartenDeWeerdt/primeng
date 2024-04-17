@@ -20,7 +20,7 @@ import {
     ViewEncapsulation,
     ViewRef
 } from '@angular/core';
-import { PrimeNGConfig, SharedModule } from 'primeng/api';
+import { PrimeNGConfig, SharedModule, TranslationKeys } from 'primeng/api';
 import { DomHandler } from 'primeng/dom';
 import { TimesIcon } from 'primeng/icons/times';
 import { WindowMaximizeIcon } from 'primeng/icons/windowmaximize';
@@ -73,7 +73,7 @@ const hideAnimation = animation([animate('{{transition}}', style({ transform: '{
                 <div #titlebar class="p-dialog-header" (mousedown)="initDrag($event)" *ngIf="config.showHeader === false ? false : true">
                     <ng-container *ngComponentOutlet="headerTemplate"></ng-container>
                     <ng-container *ngIf="!headerTemplate">
-                        <span class="p-dialog-title" [id]="ariaLabelledBy + '_title'">{{ config.header }}</span>
+                        <span class="p-dialog-title" [id]="ariaLabelledBy">{{ config.header }}</span>
                         <div class="p-dialog-header-icons">
                             <button *ngIf="config.maximizable" type="button" [ngClass]="{ 'p-dialog-header-icon p-dialog-header-maximize p-link': true }" (click)="maximize()" (keydown.enter)="maximize()" tabindex="-1" pRipple>
                                 <span class="p-dialog-header-maximize-icon" *ngIf="!maximizeIconTemplate || !minimizeIconTemplate" [ngClass]="maximized ? minimizeIcon : maximizeIcon"></span>
@@ -199,6 +199,10 @@ export class DynamicDialogComponent implements AfterViewInit, OnDestroy {
         return this.config.position!;
     }
 
+    get closeAriaLabel(): string {
+        return this.primeNGConfig.getTranslation(TranslationKeys.ARIA)['close'];
+    }
+
     set style(value: any) {
         if (value) {
             this._style = { ...value };
@@ -309,6 +313,7 @@ export class DynamicDialogComponent implements AfterViewInit, OnDestroy {
         viewContainerRef?.clear();
 
         this.componentRef = viewContainerRef?.createComponent(componentType);
+        this.dialogRef.onChildComponentLoaded.next(this.componentRef!.instance);
     }
 
     moveOnTop() {

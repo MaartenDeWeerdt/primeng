@@ -3,6 +3,7 @@ import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
     AfterContentInit,
     AfterViewInit,
+    booleanAttribute,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -16,6 +17,7 @@ import {
     Input,
     NgModule,
     NgZone,
+    numberAttribute,
     OnChanges,
     OnDestroy,
     OnInit,
@@ -146,7 +148,6 @@ export class TableService {
                 [first]="first"
                 [totalRecords]="totalRecords"
                 [pageLinkSize]="pageLinks"
-                styleClass="p-paginator-top"
                 [alwaysShow]="alwaysShowPaginator"
                 (onPageChange)="onPageChange($event)"
                 [rowsPerPageOptions]="rowsPerPageOptions"
@@ -162,7 +163,7 @@ export class TableService {
                 [showJumpToPageDropdown]="showJumpToPageDropdown"
                 [showJumpToPageInput]="showJumpToPageInput"
                 [showPageLinks]="showPageLinks"
-                [styleClass]="paginatorStyleClass"
+                [styleClass]="getPaginatorStyleClasses('p-paginator-top')"
                 [locale]="paginatorLocale"
             >
                 <ng-template pTemplate="dropdownicon" *ngIf="paginatorDropdownIconTemplate">
@@ -265,7 +266,6 @@ export class TableService {
                 [first]="first"
                 [totalRecords]="totalRecords"
                 [pageLinkSize]="pageLinks"
-                styleClass="p-paginator-bottom"
                 [alwaysShow]="alwaysShowPaginator"
                 (onPageChange)="onPageChange($event)"
                 [rowsPerPageOptions]="rowsPerPageOptions"
@@ -281,7 +281,7 @@ export class TableService {
                 [showJumpToPageDropdown]="showJumpToPageDropdown"
                 [showJumpToPageInput]="showJumpToPageInput"
                 [showPageLinks]="showPageLinks"
-                [styleClass]="paginatorStyleClass"
+                [styleClass]="getPaginatorStyleClasses('p-paginator-bottom')"
                 [locale]="paginatorLocale"
             >
                 <ng-template pTemplate="dropdownicon" *ngIf="paginatorDropdownIconTemplate">
@@ -363,12 +363,12 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * When specified as true, enables the pagination.
      * @group Props
      */
-    @Input() paginator: boolean | undefined;
+    @Input({ transform: booleanAttribute }) paginator: boolean | undefined;
     /**
      * Number of page links to display in paginator.
      * @group Props
      */
-    @Input() pageLinks: number = 5;
+    @Input({ transform: numberAttribute }) pageLinks: number = 5;
     /**
      * Array of integer/object values to display inside rows per page dropdown of paginator
      * @group Props
@@ -378,7 +378,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Whether to show it even there is only one page.
      * @group Props
      */
-    @Input() alwaysShowPaginator: boolean = true;
+    @Input({ transform: booleanAttribute }) alwaysShowPaginator: boolean = true;
     /**
      * Position of the paginator, options are "top", "bottom" or "both".
      * @group Props
@@ -408,32 +408,32 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Whether to display current page report.
      * @group Props
      */
-    @Input() showCurrentPageReport: boolean | undefined;
+    @Input({ transform: booleanAttribute }) showCurrentPageReport: boolean | undefined;
     /**
      * Whether to display a dropdown to navigate to any page.
      * @group Props
      */
-    @Input() showJumpToPageDropdown: boolean | undefined;
+    @Input({ transform: booleanAttribute }) showJumpToPageDropdown: boolean | undefined;
     /**
      * Whether to display a input to navigate to any page.
      * @group Props
      */
-    @Input() showJumpToPageInput: boolean | undefined;
+    @Input({ transform: booleanAttribute }) showJumpToPageInput: boolean | undefined;
     /**
      * When enabled, icons are displayed on paginator to go first and last page.
      * @group Props
      */
-    @Input() showFirstLastIcon: boolean = true;
+    @Input({ transform: booleanAttribute }) showFirstLastIcon: boolean = true;
     /**
      * Whether to show page links.
      * @group Props
      */
-    @Input() showPageLinks: boolean = true;
+    @Input({ transform: booleanAttribute }) showPageLinks: boolean = true;
     /**
      * Sort order to use when an unsorted column gets sorted by user interaction.
      * @group Props
      */
-    @Input() defaultSortOrder: number = 1;
+    @Input({ transform: numberAttribute }) defaultSortOrder: number = 1;
     /**
      * Defines whether sorting works on single column or on multiple columns.
      * @group Props
@@ -443,7 +443,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * When true, resets paginator to first page after sorting. Available only when sortMode is set to single.
      * @group Props
      */
-    @Input() resetPageOnSort: boolean = true;
+    @Input({ transform: booleanAttribute }) resetPageOnSort: boolean = true;
     /**
      * Specifies the selection mode, valid values are "single" and "multiple".
      * @group Props
@@ -453,7 +453,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * When enabled with paginator and checkbox selection mode, the select all checkbox in the header will select all rows on the current page.
      * @group Props
      */
-    @Input() selectionPageOnly: boolean | undefined;
+    @Input({ transform: booleanAttribute }) selectionPageOnly: boolean | undefined;
     /**
      * Selected row with a context menu.
      * @group Props
@@ -479,27 +479,27 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Defines whether metaKey should be considered for the selection. On touch enabled devices, metaKeySelection is turned off automatically.
      * @group Props
      */
-    @Input() metaKeySelection: boolean | undefined = false;
+    @Input({ transform: booleanAttribute }) metaKeySelection: boolean | undefined = false;
     /**
      * Defines if the row is selectable.
      * @group Props
      */
-    @Input() rowSelectable: boolean | undefined | any;
+    @Input({ transform: booleanAttribute }) rowSelectable: boolean | undefined | any;
     /**
      * Function to optimize the dom operations by delegating to ngForTrackBy, default algorithm checks for object identity.
      * @group Props
      */
-    @Input() rowTrackBy: Function = (index: number, item: any) => item;
+    @Input({ transform: numberAttribute }) rowTrackBy: Function = (index: number, item: any) => item;
     /**
      * Defines if data is loaded and interacted with in lazy manner.
      * @group Props
      */
-    @Input() lazy: boolean = false;
+    @Input({ transform: booleanAttribute }) lazy: boolean = false;
     /**
      * Whether to call lazy loading on initialization.
      * @group Props
      */
-    @Input() lazyLoadOnInit: boolean = true;
+    @Input({ transform: booleanAttribute }) lazyLoadOnInit: boolean = true;
     /**
      * Algorithm to define if a row is selected, valid values are "equals" that compares by reference and "deepEquals" that compares all fields.
      * @group Props
@@ -529,7 +529,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Delay in milliseconds before filtering the data.
      * @group Props
      */
-    @Input() filterDelay: number = 300;
+    @Input({ transform: numberAttribute }) filterDelay: number = 300;
     /**
      * Locale to use in filtering. The default locale is the host environment's current locale.
      * @group Props
@@ -539,12 +539,12 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Map instance to keep the expanded rows where key of the map is the data key of the row.
      * @group Props
      */
-    @Input() expandedRowKeys: { [s: string]: boolean } = {};
+    @Input({ transform: booleanAttribute }) expandedRowKeys: { [s: string]: boolean } = {};
     /**
      * Map instance to keep the rows being edited where key of the map is the data key of the row.
      * @group Props
      */
-    @Input() editingRowKeys: { [s: string]: boolean } = {};
+    @Input({ transform: booleanAttribute }) editingRowKeys: { [s: string]: boolean } = {};
     /**
      * Whether multiple rows can be expanded at any time. Valid values are "multiple" and "single".
      * @group Props
@@ -554,7 +554,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Enables scrollable tables.
      * @group Props
      */
-    @Input() scrollable: boolean | undefined;
+    @Input({ transform: booleanAttribute }) scrollable: boolean | undefined;
     /**
      * Orientation of the scrolling, options are "vertical", "horizontal" and "both".
      * @group Props
@@ -575,12 +575,12 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Whether the data should be loaded on demand during scroll.
      * @group Props
      */
-    @Input() virtualScroll: boolean | undefined;
+    @Input({ transform: booleanAttribute }) virtualScroll: boolean | undefined;
     /**
      * Height of a row to use in calculations of virtual scrolling.
      * @group Props
      */
-    @Input() virtualScrollItemSize: number | undefined;
+    @Input({ transform: numberAttribute }) virtualScrollItemSize: number | undefined;
     /**
      * Whether to use the scroller feature. The properties of scroller component can be used like an object in it.
      * @group Props
@@ -590,7 +590,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Threshold in milliseconds to delay lazy loading during scrolling.
      * @group Props
      */
-    @Input() virtualScrollDelay: number = 250;
+    @Input({ transform: numberAttribute }) virtualScrollDelay: number = 250;
     /**
      * Width of the frozen columns container.
      * @group Props
@@ -618,7 +618,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * When enabled, columns can be resized using drag and drop.
      * @group Props
      */
-    @Input() resizableColumns: boolean | undefined;
+    @Input({ transform: booleanAttribute }) resizableColumns: boolean | undefined;
     /**
      * Defines whether the overall table width should change on column resize, valid values are "fit" and "expand".
      * @group Props
@@ -628,12 +628,12 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * When enabled, columns can be reordered using drag and drop.
      * @group Props
      */
-    @Input() reorderableColumns: boolean | undefined;
+    @Input({ transform: booleanAttribute }) reorderableColumns: boolean | undefined;
     /**
      * Displays a loader to indicate data load is in progress.
      * @group Props
      */
-    @Input() loading: boolean | undefined;
+    @Input({ transform: booleanAttribute }) loading: boolean | undefined;
     /**
      * The icon to show while indicating data load is in progress.
      * @group Props
@@ -643,27 +643,27 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Whether to show the loading mask when loading property is true.
      * @group Props
      */
-    @Input() showLoader: boolean = true;
+    @Input({ transform: booleanAttribute }) showLoader: boolean = true;
     /**
      * Adds hover effect to rows without the need for selectionMode. Note that tr elements that can be hovered need to have "p-selectable-row" class for rowHover to work.
      * @group Props
      */
-    @Input() rowHover: boolean | undefined;
+    @Input({ transform: booleanAttribute }) rowHover: boolean | undefined;
     /**
      * Whether to use the default sorting or a custom one using sortFunction.
      * @group Props
      */
-    @Input() customSort: boolean | undefined;
+    @Input({ transform: booleanAttribute }) customSort: boolean | undefined;
     /**
      * Whether to use the initial sort badge or not.
      * @group Props
      */
-    @Input() showInitialSortBadge: boolean = true;
+    @Input({ transform: booleanAttribute }) showInitialSortBadge: boolean = true;
     /**
      * Whether the cell widths scale according to their content or not.  Deprecated:  Table layout is always "auto".
      * @group Props
      */
-    @Input() autoLayout: boolean | undefined;
+    @Input({ transform: booleanAttribute }) autoLayout: boolean | undefined;
     /**
      * Export function.
      * @group Props
@@ -698,7 +698,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * Order to sort when default row grouping is enabled.
      * @group Props
      */
-    @Input() groupRowsByOrder: number = 1;
+    @Input({ transform: numberAttribute }) groupRowsByOrder: number = 1;
     /**
      * Defines the responsive mode, valid options are "stack" and "scroll".
      * @group Props
@@ -708,7 +708,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
      * The breakpoint to define the maximum width boundary when using stack responsive layout.
      * @group Props
      */
-    @Input() breakpoint: string = '960px';
+    @Input() breakpoint: string = '640px';
     /**
      * Locale to be used in paginator formatting.
      * @group Props
@@ -1169,7 +1169,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
             }
         }
 
-        if (this.responsiveLayout === 'stack' && !this.scrollable) {
+        if (this.responsiveLayout === 'stack') {
             this.createResponsiveStyle();
         }
 
@@ -1340,11 +1340,15 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
         }
 
         if (simpleChange.columns) {
-            this._columns = simpleChange.columns.currentValue;
-            this.tableService.onColumnsChange(simpleChange.columns.currentValue);
+            if (!this.isStateful()) {
+                this._columns = simpleChange.columns.currentValue;
+                this.tableService.onColumnsChange(simpleChange.columns.currentValue);
+            }
 
             if (this._columns && this.isStateful() && this.reorderableColumns && !this.columnOrderStateRestored) {
                 this.restoreColumnOrder();
+
+                this.tableService.onColumnsChange(this._columns);
             }
         }
 
@@ -2045,7 +2049,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
             clearTimeout(this.filterTimeout);
         }
         if (!this.isFilterBlank(value)) {
-            this.filters[field] = field == 'global' ? { value: value, matchMode: matchMode } : [{ value: value, matchMode: matchMode }];
+            this.filters[field] = { value: value, matchMode: matchMode };
         } else if (this.filters[field]) {
             delete this.filters[field];
         }
@@ -2426,11 +2430,11 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
     }
 
     toggleRow(rowData: any, event?: Event) {
-        if (!this.dataKey) {
-            throw new Error('dataKey must be defined to use row expansion');
+        if (!this.dataKey && !this.groupRowsBy) {
+            throw new Error('dataKey or groupRowsBy must be defined to use row expansion');
         }
 
-        let dataKeyValue = String(ObjectUtils.resolveFieldData(rowData, this.dataKey));
+        let dataKeyValue = this.groupRowsBy ? String(ObjectUtils.resolveFieldData(rowData, this.groupRowsBy)) : String(ObjectUtils.resolveFieldData(rowData, this.dataKey));
 
         if (this.expandedRowKeys[dataKeyValue] != null) {
             delete this.expandedRowKeys[dataKeyValue];
@@ -2460,7 +2464,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
     }
 
     isRowExpanded(rowData: any): boolean {
-        return this.expandedRowKeys[String(ObjectUtils.resolveFieldData(rowData, this.dataKey))] === true;
+        return this.groupRowsBy ? this.expandedRowKeys[String(ObjectUtils.resolveFieldData(rowData, this.groupRowsBy))] === true : this.expandedRowKeys[String(ObjectUtils.resolveFieldData(rowData, this.dataKey))] === true;
     }
 
     isRowEditing(rowData: any): boolean {
@@ -2853,6 +2857,10 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
                 this.tableWidthState = state.tableWidth;
             }
 
+            // if (this.reorderableColumns) {
+            //     this.restoreColumnOrder();
+            // }
+
             if (state.expandedRowKeys) {
                 this.expandedRowKeys = state.expandedRowKeys;
             }
@@ -2929,6 +2937,7 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
         if (stateString) {
             let state: TableState = JSON.parse(stateString);
             let columnOrder = state.columnOrder;
+
             if (columnOrder) {
                 let reorderedColumns: any[] = [];
 
@@ -3027,6 +3036,13 @@ export class Table implements OnInit, AfterViewInit, AfterContentInit, Blockable
 
         this.destroyStyleElement();
         this.destroyResponsiveStyle();
+    }
+
+    getPaginatorStyleClasses(className?: string) {
+        return [this.paginatorStyleClass, className]
+            .filter((c) => !!c)
+            .join(' ')
+            .trim();
     }
 }
 
@@ -3138,9 +3154,9 @@ export class TableBody implements AfterViewInit, OnDestroy {
         }
     }
 
-    @Input() frozen: boolean | undefined;
+    @Input({ transform: booleanAttribute }) frozen: boolean | undefined;
 
-    @Input() frozenRows: boolean | undefined;
+    @Input({ transform: booleanAttribute }) frozenRows: boolean | undefined;
 
     @Input() scrollerOptions: any;
 
@@ -3168,7 +3184,7 @@ export class TableBody implements AfterViewInit, OnDestroy {
 
     shouldRenderRowGroupHeader(value: any, rowData: any, i: number) {
         let currentRowFieldData = ObjectUtils.resolveFieldData(rowData, this.dt.groupRowsBy);
-        let prevRowData = value[i - 1];
+        let prevRowData = value[i - (1 + this.dt._first)];
         if (prevRowData) {
             let previousRowFieldData = ObjectUtils.resolveFieldData(prevRowData, this.dt.groupRowsBy);
             return currentRowFieldData !== previousRowFieldData;
@@ -3179,7 +3195,7 @@ export class TableBody implements AfterViewInit, OnDestroy {
 
     shouldRenderRowGroupFooter(value: any, rowData: any, i: number) {
         let currentRowFieldData = ObjectUtils.resolveFieldData(rowData, this.dt.groupRowsBy);
-        let nextRowData = value[i + 1];
+        let nextRowData = value[i + (1 + this.dt._first)];
         if (nextRowData) {
             let nextRowFieldData = ObjectUtils.resolveFieldData(nextRowData, this.dt.groupRowsBy);
             return currentRowFieldData !== nextRowFieldData;
@@ -3284,12 +3300,14 @@ export class FrozenColumn implements AfterViewInit {
 
     @Input() alignFrozen: string = 'left';
 
-    constructor(private el: ElementRef) {}
+    constructor(private el: ElementRef, private zone: NgZone) {}
 
     ngAfterViewInit() {
-        setTimeout(() => {
-            this.updateStickyPosition();
-        }, 1000);
+        this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+                this.updateStickyPosition();
+            }, 1000);
+        });
     }
 
     _frozen: boolean = true;
@@ -3338,7 +3356,7 @@ export class FrozenColumn implements AfterViewInit {
 export class SortableColumn implements OnInit, OnDestroy {
     @Input('pSortableColumn') field: string | undefined;
 
-    @Input() pSortableColumnDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pSortableColumnDisabled: boolean | undefined;
 
     sorted: boolean | undefined;
 
@@ -3505,7 +3523,7 @@ export class SelectableRow implements OnInit, OnDestroy {
 
     @Input('pSelectableRowIndex') index: number | undefined;
 
-    @Input() pSelectableRowDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pSelectableRowDisabled: boolean | undefined;
 
     selected: boolean | undefined;
 
@@ -3577,8 +3595,8 @@ export class SelectableRow implements OnInit, OnDestroy {
                 break;
 
             default:
-                if (event.code === 'KeyA' && (event.metaKey || event.ctrlKey)) {
-                    const data = this.dt.dataToRender(this.dt.rows);
+                if (event.code === 'KeyA' && (event.metaKey || event.ctrlKey) && this.dt.selectionMode === 'multiple') {
+                    const data = this.dt.dataToRender(this.dt.processedData);
                     this.dt.selection = [...data];
                     this.dt.selectRange(event, data.length - 1);
 
@@ -3753,7 +3771,7 @@ export class SelectableRowDblClick implements OnInit, OnDestroy {
 
     @Input('pSelectableRowIndex') index: number | undefined;
 
-    @Input() pSelectableRowDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pSelectableRowDisabled: boolean | undefined;
 
     selected: boolean | undefined;
 
@@ -3808,7 +3826,7 @@ export class ContextMenuRow {
 
     @Input('pContextMenuRowIndex') index: number | undefined;
 
-    @Input() pContextMenuRowDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pContextMenuRowDisabled: boolean | undefined;
 
     selected: boolean | undefined;
 
@@ -3856,7 +3874,7 @@ export class ContextMenuRow {
 export class RowToggler {
     @Input('pRowToggler') data: any;
 
-    @Input() pRowTogglerDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pRowTogglerDisabled: boolean | undefined;
 
     constructor(public dt: Table) {}
 
@@ -3880,7 +3898,7 @@ export class RowToggler {
     }
 })
 export class ResizableColumn implements AfterViewInit, OnDestroy {
-    @Input() pResizableColumnDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pResizableColumnDisabled: boolean | undefined;
 
     resizer: HTMLSpanElement | undefined;
 
@@ -3963,7 +3981,7 @@ export class ResizableColumn implements AfterViewInit, OnDestroy {
     }
 })
 export class ReorderableColumn implements AfterViewInit, OnDestroy {
-    @Input() pReorderableColumnDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pReorderableColumnDisabled: boolean | undefined;
 
     dragStartListener: VoidListener;
 
@@ -4076,7 +4094,7 @@ export class EditableColumn implements OnChanges, AfterViewInit, OnDestroy {
 
     @Input('pEditableColumnRowIndex') rowIndex: number | undefined;
 
-    @Input() pEditableColumnDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pEditableColumnDisabled: boolean | undefined;
 
     @Input() pFocusCellSelector: string | undefined;
 
@@ -4407,7 +4425,7 @@ export class EditableColumn implements OnChanges, AfterViewInit, OnDestroy {
 export class EditableRow {
     @Input('pEditableRow') data: any;
 
-    @Input() pEditableRowDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pEditableRowDisabled: boolean | undefined;
 
     constructor(public el: ElementRef) {}
 
@@ -4526,11 +4544,11 @@ export class CellEditor implements AfterContentInit {
     }
 })
 export class TableRadioButton {
-    @Input() disabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) disabled: boolean | undefined;
 
     @Input() value: any;
 
-    @Input() index: number | undefined;
+    @Input({ transform: numberAttribute }) index: number | undefined;
 
     @Input() inputId: string | undefined;
 
@@ -4623,17 +4641,17 @@ export class TableRadioButton {
     }
 })
 export class TableCheckbox {
-    @Input() disabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) disabled: boolean | undefined;
 
     @Input() value: any;
 
-    @Input() index: number | undefined;
+    @Input({ transform: numberAttribute }) index: number | undefined;
 
     @Input() inputId: string | undefined;
 
     @Input() name: string | undefined;
 
-    @Input() required: boolean | undefined;
+    @Input({ transform: booleanAttribute }) required: boolean | undefined;
 
     @Input() ariaLabel: string | undefined;
 
@@ -4707,7 +4725,7 @@ export class TableCheckbox {
     }
 })
 export class TableHeaderCheckbox {
-    @Input() disabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) disabled: boolean | undefined;
 
     @Input() inputId: string | undefined;
 
@@ -4808,7 +4826,7 @@ export class ReorderableRowHandle implements AfterViewInit {
 export class ReorderableRow implements AfterViewInit {
     @Input('pReorderableRow') index: number | undefined;
 
-    @Input() pReorderableRowDisabled: boolean | undefined;
+    @Input({ transform: booleanAttribute }) pReorderableRowDisabled: boolean | undefined;
 
     mouseDownListener: VoidListener;
 
@@ -4873,8 +4891,21 @@ export class ReorderableRow implements AfterViewInit {
     }
 
     onMouseDown(event: Event) {
-        if (DomHandler.hasClass(event.target, 'p-datatable-reorderablerow-handle')) this.el.nativeElement.draggable = true;
-        else this.el.nativeElement.draggable = false;
+        const targetElement = event.target as HTMLElement;
+        const isHandleClicked = this.isHandleElement(targetElement);
+        this.el.nativeElement.draggable = isHandleClicked;
+    }
+
+    isHandleElement(element: HTMLElement): boolean {
+        if (element?.classList.contains('p-datatable-reorderablerow-handle')) {
+            return true;
+        }
+
+        if (element?.parentElement && !['TD', 'TR'].includes(element?.parentElement?.tagName)) {
+            return this.isHandleElement(element?.parentElement);
+        }
+
+        return false;
     }
 
     onDragStart(event: DragEvent) {
@@ -4925,6 +4956,7 @@ export class ReorderableRow implements AfterViewInit {
                 class="p-fluid"
                 [type]="type"
                 [field]="field"
+                [ariaLabel]="ariaLabel"
                 [filterConstraint]="dt.filters[field]"
                 [filterTemplate]="filterTemplate"
                 [placeholder]="placeholder"
@@ -4945,9 +4977,9 @@ export class ReorderableRow implements AfterViewInit {
                 type="button"
                 class="p-column-filter-menu-button p-link"
                 aria-haspopup="true"
-                [attr.aria-label]="showMenuButtonLabel"
-                [attr.aria-controls]="overlayId"
-                [attr.aria-expanded]="overlayVisible"
+                [attr.aria-label]="filterMenuButtonAriaLabel"
+                [attr.aria-controls]="overlayVisible ? overlayId : null"
+                [attr.aria-expanded]="overlayVisible ?? false"
                 [ngClass]="{ 'p-column-filter-menu-button-open': overlayVisible, 'p-column-filter-menu-button-active': hasFilter() }"
                 (click)="toggleMenu()"
                 (keydown)="onToggleButtonKeyDown($event)"
@@ -5076,7 +5108,7 @@ export class ColumnFilter implements AfterContentInit {
      * Decides whether to display filter menu popup.
      * @group Props
      */
-    @Input() showMenu: boolean = true;
+    @Input({ transform: booleanAttribute }) showMenu: boolean = true;
     /**
      * Filter match mode.
      * @group Props
@@ -5092,32 +5124,32 @@ export class ColumnFilter implements AfterContentInit {
      * Decides whether to display filter operator.
      * @group Props
      */
-    @Input() showOperator: boolean = true;
+    @Input({ transform: booleanAttribute }) showOperator: boolean = true;
     /**
      * Decides whether to display clear filter button.
      * @group Props
      */
-    @Input() showClearButton: boolean = true;
+    @Input({ transform: booleanAttribute }) showClearButton: boolean = true;
     /**
      * Decides whether to display apply filter button.
      * @group Props
      */
-    @Input() showApplyButton: boolean = true;
+    @Input({ transform: booleanAttribute }) showApplyButton: boolean = true;
     /**
      * Decides whether to display filter match modes.
      * @group Props
      */
-    @Input() showMatchModes: boolean = true;
+    @Input({ transform: booleanAttribute }) showMatchModes: boolean = true;
     /**
      * Decides whether to display add filter button.
      * @group Props
      */
-    @Input() showAddButton: boolean = true;
+    @Input({ transform: booleanAttribute }) showAddButton: boolean = true;
     /**
      * Decides whether to close popup on clear button click.
      * @group Props
      */
-    @Input() hideOnClear: boolean = false;
+    @Input({ transform: booleanAttribute }) hideOnClear: boolean = false;
     /**
      * Filter placeholder.
      * @group Props
@@ -5132,17 +5164,17 @@ export class ColumnFilter implements AfterContentInit {
      * Defines maximum amount of constraints.
      * @group Props
      */
-    @Input() maxConstraints: number = 2;
+    @Input({ transform: numberAttribute }) maxConstraints: number = 2;
     /**
      * Defines minimum fraction of digits.
      * @group Props
      */
-    @Input() minFractionDigits: number | undefined;
+    @Input({ transform: numberAttribute }) minFractionDigits: number | undefined;
     /**
      * Defines maximum fraction of digits.
      * @group Props
      */
-    @Input() maxFractionDigits: number | undefined;
+    @Input({ transform: numberAttribute }) maxFractionDigits: number | undefined;
     /**
      * Defines prefix of the filter.
      * @group Props
@@ -5177,12 +5209,17 @@ export class ColumnFilter implements AfterContentInit {
      * Defines if filter grouping will be enabled.
      * @group Props
      */
-    @Input() useGrouping: boolean = true;
+    @Input({ transform: booleanAttribute }) useGrouping: boolean = true;
     /**
      * Defines the visibility of buttons.
      * @group Props
      */
-    @Input() showButtons: boolean = true;
+    @Input({ transform: booleanAttribute }) showButtons: boolean = true;
+    /**
+     * Defines the aria-label of the form element.
+     * @group Props
+     */
+    @Input() ariaLabel: string | undefined;
 
     @ViewChild('icon') icon: Nullable<ElementRef>;
 
@@ -5277,7 +5314,7 @@ export class ColumnFilter implements AfterContentInit {
     }
 
     get filterMenuButtonAriaLabel() {
-        return this.config.translation ? (this.overlayVisible ? this.config.translation.aria.showFilterMenu : this.config.translation.aria.hideFilterMenu) : undefined;
+        return this.config.translation ? (this.overlayVisible ? this.config.translation.aria.hideFilterMenu : this.config.translation.aria.showFilterMenu) : undefined;
     }
 
     get removeRuleButtonAriaLabel() {
@@ -5427,7 +5464,9 @@ export class ColumnFilter implements AfterContentInit {
 
     removeConstraint(filterMeta: FilterMetadata) {
         this.dt.filters[<string>this.field] = (<FilterMetadata[]>this.dt.filters[<string>this.field]).filter((meta) => meta !== filterMeta);
-        this.dt._filter();
+        if (!this.showApplyButton) {
+            this.dt._filter();
+        }
         DomHandler.focus(this.clearButtonViewChild.nativeElement);
     }
 
@@ -5589,7 +5628,10 @@ export class ColumnFilter implements AfterContentInit {
             const documentTarget: any = this.el ? this.el.nativeElement.ownerDocument : 'document';
 
             this.documentClickListener = this.renderer.listen(documentTarget, 'mousedown', (event) => {
-                if (this.overlayVisible && !this.selfClick && this.isOutsideClicked(event)) {
+                const dialogElements = document.querySelectorAll('[role="dialog"]');
+                const targetIsColumnFilterMenuButton = event.target.closest('.p-column-filter-menu-button');
+
+                if (this.overlayVisible && this.isOutsideClicked(event) && (targetIsColumnFilterMenuButton || dialogElements?.length <= 1)) {
                     this.hide();
                 }
 
@@ -5715,7 +5757,16 @@ export class ColumnFilter implements AfterContentInit {
         </ng-container>
         <ng-template #builtInElement>
             <ng-container [ngSwitch]="type">
-                <input *ngSwitchCase="'text'" type="text" pInputText [value]="filterConstraint?.value" (input)="onModelChange($event.target.value)" (keydown.enter)="onTextInputEnterKeyDown($event)" [attr.placeholder]="placeholder" />
+                <input
+                    *ngSwitchCase="'text'"
+                    type="text"
+                    [ariaLabel]="ariaLabel"
+                    pInputText
+                    [value]="filterConstraint?.value"
+                    (input)="onModelChange($event.target.value)"
+                    (keydown.enter)="onTextInputEnterKeyDown($event)"
+                    [attr.placeholder]="placeholder"
+                />
                 <p-inputNumber
                     *ngSwitchCase="'numeric'"
                     [ngModel]="filterConstraint?.value"
@@ -5724,6 +5775,7 @@ export class ColumnFilter implements AfterContentInit {
                     [showButtons]="showButtons"
                     [minFractionDigits]="minFractionDigits"
                     [maxFractionDigits]="maxFractionDigits"
+                    [ariaLabel]="ariaLabel"
                     [prefix]="prefix"
                     [suffix]="suffix"
                     [placeholder]="placeholder"
@@ -5734,8 +5786,8 @@ export class ColumnFilter implements AfterContentInit {
                     [currencyDisplay]="currencyDisplay"
                     [useGrouping]="useGrouping"
                 ></p-inputNumber>
-                <p-triStateCheckbox *ngSwitchCase="'boolean'" [ngModel]="filterConstraint?.value" (ngModelChange)="onModelChange($event)"></p-triStateCheckbox>
-                <p-calendar *ngSwitchCase="'date'" [placeholder]="placeholder" [ngModel]="filterConstraint?.value" (ngModelChange)="onModelChange($event)" appendTo="body"></p-calendar>
+                <p-triStateCheckbox [ariaLabel]="ariaLabel" *ngSwitchCase="'boolean'" [ngModel]="filterConstraint?.value" (ngModelChange)="onModelChange($event)"></p-triStateCheckbox>
+                <p-calendar [ariaLabel]="ariaLabel" *ngSwitchCase="'date'" [placeholder]="placeholder" [ngModel]="filterConstraint?.value" (ngModelChange)="onModelChange($event)" appendTo="body"></p-calendar>
             </ng-container>
         </ng-template>
     `,
@@ -5755,9 +5807,9 @@ export class ColumnFilterFormElement implements OnInit {
 
     @Input() placeholder: string | undefined;
 
-    @Input() minFractionDigits: number | undefined;
+    @Input({ transform: numberAttribute }) minFractionDigits: number | undefined;
 
-    @Input() maxFractionDigits: number | undefined;
+    @Input({ transform: numberAttribute }) maxFractionDigits: number | undefined;
 
     @Input() prefix: string | undefined;
 
@@ -5771,7 +5823,9 @@ export class ColumnFilterFormElement implements OnInit {
 
     @Input() currencyDisplay: string | undefined;
 
-    @Input() useGrouping: boolean = true;
+    @Input({ transform: booleanAttribute }) useGrouping: boolean = true;
+
+    @Input() ariaLabel: string | undefined;
 
     get showButtons(): boolean {
         return this.colFilter.showButtons;

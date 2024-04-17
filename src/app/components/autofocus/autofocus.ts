@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Directive, ElementRef, Input, NgModule } from '@angular/core';
+import { Directive, ElementRef, Input, NgModule, booleanAttribute } from '@angular/core';
 import { DomHandler } from 'primeng/dom';
 /**
  * AutoFocus manages focus on focusable element on load.
@@ -17,23 +17,25 @@ export class AutoFocus {
      * When present, it specifies that the component should automatically get focus on load.
      * @group Props
      */
-    @Input() autofocus: boolean | undefined;
+    @Input({ transform: booleanAttribute }) autofocus: boolean | undefined;
 
     focused: boolean = false;
 
     ngAfterContentChecked() {
         if (!this.focused) {
             if (this.autofocus) {
-                const focusableElements = DomHandler.getFocusableElements(this.host.nativeElement);
+                setTimeout(() => {
+                    const focusableElements = DomHandler.getFocusableElements(this.host.nativeElement);
 
-                if (focusableElements.length === 0) {
-                    this.host.nativeElement.focus();
-                }
-                if (focusableElements.length > 0) {
-                    focusableElements[0].focus();
-                }
+                    if (focusableElements.length === 0) {
+                        this.host.nativeElement.focus();
+                    }
+                    if (focusableElements.length > 0) {
+                        focusableElements[0].focus();
+                    }
 
-                this.focused = true;
+                    this.focused = true;
+                });
             }
         }
     }
